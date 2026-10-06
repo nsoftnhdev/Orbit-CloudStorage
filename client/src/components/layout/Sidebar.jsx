@@ -12,9 +12,10 @@ import {
 import { Dropdown, DropdownItem } from "../ui/Dropdown";
 import { ProgressBar } from "../ui/ProgressBar";
 import { formatBytes } from "../../assets/assets";
+import { useDrive } from "../../hooks/useDrive";
 
 const Sidebar = ({ onCreateFolderClick, isMobileOpen, setIsMobileOpen }) => {
-  const isUploading = false;
+  const { isUploading, uploadFiles } = useDrive();
   const { user, currenFolderId } = useApp();
   const location = useLocation();
   const fileInputRef = useRef(null);
@@ -25,6 +26,13 @@ const Sidebar = ({ onCreateFolderClick, isMobileOpen, setIsMobileOpen }) => {
     100,
     Math.round((storage_used / storage_limit) * 100),
   );
+
+  const handleFileSelect = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      uploadFiles(e.target.files, currenFolderId);
+      e.target.value = "";
+    }
+  };
 
   const navItems = [
     { label: "My Drive", path: "/", icon: HardDriveIcon },
@@ -60,7 +68,13 @@ const Sidebar = ({ onCreateFolderClick, isMobileOpen, setIsMobileOpen }) => {
 
         {/* Upload CTA Dropdown */}
         <div className="p-4">
-          <input type="file" ref={fileInputRef} multiple className="hidden" />
+          <input
+            onChange={handleFileSelect}
+            type="file"
+            ref={fileInputRef}
+            multiple
+            className="hidden"
+          />
 
           <Dropdown
             trigger={
@@ -118,10 +132,23 @@ const Sidebar = ({ onCreateFolderClick, isMobileOpen, setIsMobileOpen }) => {
         <div className="p-4 border-t border-slate-200 bg-slate-50">
           <div className="flex items-center justify-between text-xs mb-2">
             <span className="text-slate-600 font-medium">Storage</span>
-            <span className="text-slate-900 font-semibold">{used_percentage}%</span>
+            <span className="text-slate-900 font-semibold">
+              {used_percentage}%
+            </span>
           </div>
-          <ProgressBar progress={used_percentage} color={used_percentage > 90 ? "bg-red-600" : used_percentage > 75 ? "bg-amber-500" : "bg-[#FA2D48]"} />
-            <p className="text-[11px] text-slate-500 mt-2">{formatBytes(storage_used)} of {formatBytes(storage_limit)} used</p>
+          <ProgressBar
+            progress={used_percentage}
+            color={
+              used_percentage > 90
+                ? "bg-red-600"
+                : used_percentage > 75
+                  ? "bg-amber-500"
+                  : "bg-[#FA2D48]"
+            }
+          />
+          <p className="text-[11px] text-slate-500 mt-2">
+            {formatBytes(storage_used)} of {formatBytes(storage_limit)} used
+          </p>
         </div>
       </aside>
     </>
