@@ -10,11 +10,12 @@ const FolderCard = ({
   onDelete,
 }) => {
   return (
-    <div
-      onClick={() => onClick(folder)}
-      className="group relative bg-white border border-slate-200 hover:border-[#FA1130] rounded-2xl p-4 transition-all duration-200 cursor-pointer flex items-center justify-between"
-    >
-      <div className="flex items-center gap-3 min-w-0 pr-2">
+    <div className="group relative bg-white border border-slate-200 hover:border-[#FA1130] rounded-2xl p-4 transition-all duration-200 cursor-pointer flex items-center justify-between">
+      <button
+        type="button"
+        onClick={() => onClick(folder)}
+        className="flex-1 flex items-center gap-3 min-w-0 pr-2 text-left"
+      >
         <div className="p-2.5 rounded-xl bg-[#FBEDEF] text-[#FA1130] shrink-0 border border-[#F7CBD1]">
           <LucideFolder className="size-6 fill-[#FA2D48]/20" />
         </div>
@@ -24,7 +25,7 @@ const FolderCard = ({
         >
           {folder.name}
         </h4>
-      </div>
+      </button>
 
       <ItemDropdown
         item={folder}
