@@ -1,18 +1,21 @@
-import { useState } from "react"
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-
+import CreateFolderModal from "../folders/CreateFolderModal";
 
 const DashboardLayout = () => {
-
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isCreateFolderOpen, setIsCreateFolderOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
       {/* Sidebar */}
-      <Sidebar isMobileOpen={isMobileOpen} setIsMobileOpen={setIsMobileOpen} onCreateFolderClick={() => setIsCreateFolderOpen(true)} />
+      <Sidebar
+        isMobileOpen={isMobileOpen}
+        setIsMobileOpen={setIsMobileOpen}
+        onCreateFolderClick={() => setIsCreateFolderOpen(true)}
+      />
 
       {/* Main Content Workspace */}
       <div className="md:pl-64 flex flex-col flex-1">
@@ -23,8 +26,14 @@ const DashboardLayout = () => {
           <Outlet />
         </main>
       </div>
-    </div>
-  )
-}
 
-export default DashboardLayout
+      {/* Create Folder Modal */}
+      <CreateFolderModal
+        isOpen={isCreateFolderOpen}
+        onClose={() => setIsCreateFolderOpen(false)}
+      />
+    </div>
+  );
+};
+
+export default DashboardLayout;
